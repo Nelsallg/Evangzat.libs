@@ -6,7 +6,9 @@
   "directories": {
     "test": "test"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "cypress": "^12.15.0"
+  },
   "scripts": {
     "test": "cypress"
   },
