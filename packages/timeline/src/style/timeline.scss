@@ -1,0 +1,71 @@
+@use '../_partials/mixin.scss';
+@import url('../_root.css');
+
+@mixin horizontalLine($startWidth,$endWidth,$attribute,$top,$right,$speudoClass,$left:null,$attributes:null,$bottom:null,$transition:.5s,$delay:0.4s,$asdelay:0s,$asnotdelay:0s){
+    .language-timeline#{$attribute}#{$speudoClass} #{$attributes}{
+        content: "";
+        position: absolute;
+        height: 8px;
+        top: $top;
+        right: $right;
+        z-index: -5;
+        background-color: var(--dark);
+        transition: width $transition;
+        width: $startWidth;
+        transition-delay: calc($transition - 0.1s);
+        left:$left;
+        bottom:$bottom;
+    }
+    .language-timeline#{$attribute}.idle#{$speudoClass} #{$attributes}{
+        width: $endWidth;
+        transition-delay: $asdelay;
+    }
+    
+    .language-timeline#{$attribute}:not(.idle)#{$speudoClass} #{$attributes}{
+        transition-delay: $asnotdelay; /* Retarde la transition du ::before lorsque la classe .actived est supprimée */
+    }
+}
+
+@mixin verticalLine($startHeight,$endHeight,$attribute,$top,$right,$speudoClass,$left:null,$attributes:null,$bottom:null,$transition:.5s,$delay:0s,$asdelay:0s,$asnotdelay:0.4s)
+{
+    
+    .language-timeline#{$attribute}#{$speudoClass} #{$attributes}{
+        content: '';
+        position: absolute;
+        width: 8px;
+        top: $top;
+        z-index: -5;
+        right: $right;
+        background-color: var(--dark);
+        transition: height $transition;
+        height: $startHeight;
+        transition-delay: $delay;
+        left:$left;
+        bottom:$bottom;
+    }
+    
+    .language-timeline#{$attribute}.idle#{$speudoClass} #{$attributes}{
+        height: $endHeight;
+        transition-delay: $asdelay;
+    }
+    
+    .language-timeline#{$attribute}:not(.idle)#{$speudoClass} {
+        transition-delay: $asnotdelay; /* Retarde la transition du ::after lorsque la classe .actived est supprimée */
+    }
+}
+
+@mixin timelineContent($width, $top,$right,$left,$attribute)
+{
+    .language-timeline .timeline-content#{$attribute}{
+        @include mixin.flex-center(center, center, column);
+        position: absolute;
+        width: $width;
+        height: auto;
+        top: $top;
+        right: $right;
+        left: $left;
+        background-color: var(--dark);
+        z-index: 100;
+        padding:15px;
+    }
+}

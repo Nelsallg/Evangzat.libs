@@ -1,0 +1,23 @@
+{
+  "name": "flash",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "cypress"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nelsallg/flash.lib.git"
+  },
+  "author": "Lévy Stéphane NGUEMA EKOMOE",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nelsallg/flash.lib/issues"
+  },
+  "homepage": "https://github.com/Nelsallg/flash.lib#readme"
+}
