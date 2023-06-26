@@ -12,7 +12,7 @@ export class ModalComponent{
   protected closeButton?:HTMLElement;
   protected openButton?:HTMLElement;
 
-  constructor(modal: Element,container?: HTMLElement,animation={type:'slide',position:'top'}) {
+  constructor(modal: Element,container?: HTMLElement|null,animation={type:'slide',position:'top'}) {
     this.modal = modal;
     this.audio = modal.getAttribute('audio');
     this.volume = parseInt(modal.getAttribute('volume') || '1', 10);
@@ -39,15 +39,19 @@ export class ModalComponent{
       audio.play();
     }
     const modal = this.modal;
+    console.log(modal)
     animeIn(modal as HTMLElement,this.animation,'null');
     const container = this.container;
-    const h6 = this.modal.querySelector('.alert-header h6');
+    const h6 = this.modal.querySelector('.flash-header h6');
 
     if(h6)
     h6.innerHTML = this.titre;
 
-    if(container)
-    container.insertBefore(modal, container.firstChild);
+    if(container){
+      container.insertBefore(modal, container.firstChild);
+    }else if(null === container){
+      document.body.appendChild(modal);
+    }
     
     modal.setAttribute('aria-hidden', 'false');
     if(this.timer > 0) {
@@ -55,8 +59,8 @@ export class ModalComponent{
         this.close();
       }, this.timer);
     }
-    modal.setAttribute('aria-labelledby', 'modal');
-    this.closeButton = modal.querySelector('#close-modal') as HTMLElement;
+    modal.setAttribute('aria-labelledby', 'flash');
+    this.closeButton = modal.querySelector('#flash-close-button') as HTMLElement;
     this.closeButton?.addEventListener('click', this.close);
   }
 
