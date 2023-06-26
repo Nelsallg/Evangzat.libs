@@ -1,4 +1,4 @@
-export function SVG(iconName?:string):string {
-    const content =  `<svg><use xlink:href="../../assets/icons/icon.svg#${iconName}"></use></svg>`;
+export function SVG(iconName?:string,iconPath?:string,attributes?:string=""):string {
+    const content =  `<svg ${attributes}><use xlink:href="${iconPath}#${iconName}"></use></svg>`;
     return content;
 }

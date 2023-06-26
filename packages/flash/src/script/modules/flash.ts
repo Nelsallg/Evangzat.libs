@@ -1,52 +1,58 @@
 import { $$ } from "../functions/dom";
 import { ModalComponent } from "../components/modal-component"
 import { FlashInterface, flashHTMLModel } from "../interface/flash-interface";
+import { FormatParamsToObject } from "../utils/format-params-to-object";
+
+FormatParamsToObject.ACCEPTED_PARAMS = [
+  "message","type","timer","title","closeButton",
+  "container","icon","onClickClose","autoHide",
+  "delayAutoHide","destroyOnHide","zIndex",
+  "animationIn","animationOut",
+];
 
 export class Flash implements FlashInterface{
   
-  private static HTML:string|any;
+ 
 
-  addFlash(
-    message:string, 
-    type='danger', 
-    timer=0,
-    title?:string, 
-    container?:HTMLElement|null, 
-    icon?:string,
-    closeButton?:boolean|string): Flash
+  addFlash(...params:Array<any>): Flash
   {
-    let flash = Flash.create(timer,type);
+    let properties = new FormatParamsToObject(params).getProperties();
+    let flash = Flash.create(properties['timer'],properties['type']);
+    
+    // console.log({para:params,prop:properties})
     this.show({
-      message:`${message}`,
+      message: properties['message'],
       flashBox: flash,
-      container:container,
-      type: type,
-      timer: timer,
-      title:title,
-      icon:icon,
-      closeButton:closeButton??true,
-    });
+      container: properties['container'],
+      type: properties['type'],
+      timer: properties['timer'],
+      title: properties['title'],
+      icon: properties['icon'],
+      closeButton: properties['closeButton']??true,
+    } as any);
     return this;
   }
 
- show(props:string|any, container?:HTMLElement):Flash
+ show(params:string|Array<any>, container?:HTMLElement):Flash
   {
+    
     let flashBox;
     let datas;
-    switch (typeof props) {
+    switch (typeof params) {
       case 'string':
-        flashBox = $$(props) as HTMLElement;
+        flashBox = $$(params) as HTMLElement;
         break;
       default:
+        let __params = params as any;
         datas = {
-          message: props.message, 
-          container: props.container,
-          icon: props.icon,
-          timer: props.timer,
-          type: props.type,
-          flashBox: props.flashBox,
-          title: props.title,
-          closeButton:props.closeButton
+          message: __params['message'], 
+          container: __params['container'],
+          icon: __params['icon'],
+          timer: __params['timer'],
+          type: __params['type'],
+          flashBox: __params['flashBox'],
+          title: __params['title'],
+          closeButton: __params['closeButton']
         };
         break;
     }
@@ -55,7 +61,7 @@ export class Flash implements FlashInterface{
       const message = flashBox.innerText;
       const icon = flashBox.getAttribute("icon") as string;
       const closeButton = flashBox.getAttribute("closeButton") as string;
-      flashBox.innerHTML = this.flashHTMLModel(message,icon,closeButton) ;
+      flashBox.innerHTML = this.flashHTMLModel({message:message,icon:icon,closeButton:closeButton}) ;
       let modalComponent = new ModalComponent(flashBox, container);
       modalComponent.open();
       return this;
@@ -67,19 +73,32 @@ export class Flash implements FlashInterface{
       const closeButton = datas.closeButton;
       const flashBox = datas.flashBox;
       const title = datas.title;
-      flashBox.innerHTML = this.flashHTMLModel(message,icon,closeButton,title);
+      const type = datas.type;
+      flashBox.innerHTML = this.flashHTMLModel({title:title,type:type,message:message,icon:icon,closeButton:closeButton});
       let modalComponent = new ModalComponent(flashBox,container);
       modalComponent.open();
     }
     return this;
   }
 
-  public flashHTMLModel(message:string,icon?:string,closeButton?:string|boolean,title?:string):string
+  /**
+   * @argument {string} params.message
+   * @argument {string} params.icon
+   * @argument {string|boolean} params.closeButton
+   * @argument {string} [params.title]
+   * @argument {string} params.type
+   */
+  public flashHTMLModel(...params:Array<any>):string
   {
-    flashHTMLModel.message = message;
-    flashHTMLModel.iconName = icon;
-    flashHTMLModel.closeButton = closeButton? 'true': false;
-    flashHTMLModel.title = title;
+    // message:string,icon?:string,closeButton?:string|boolean,title?:string,type?:string
+    FormatParamsToObject.ACCEPTED_PARAMS = [
+      "message","icon","type","closeButton","title",
+    ]
+    let properties = new FormatParamsToObject(params).getProperties();
+    flashHTMLModel.message = properties['message'];
+    flashHTMLModel.type = properties['type'];
+    flashHTMLModel.closeButton = properties['closeButton'] ? 'true': false;
+    flashHTMLModel.title = properties['title'];
     return flashHTMLModel.PARENT();
   }
       

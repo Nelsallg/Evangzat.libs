@@ -1,41 +1,44 @@
+/// <reference types="vite/client" />
+
+
 import { Flash } from "../modules/flash";
 import { SVG } from "../components/custom.d";
+import iconPath from "../../assets/icon/icon.svg";
+import '../../../../../assets/style/flash.scss';
+import { types } from "sass";
 
 export interface FlashInterface {
-  addFlash(
-    message: string,
-    type: string,
-    duration: number,
-    title?: string,
-    container?: HTMLElement | null,
-    icon?: string,
-    closeButton?: boolean | string
-  ): Flash;
+  addFlash(...params:Array<any>): Flash;
   show(props: string | any, container?: HTMLElement): Flash;
-  flashHTMLModel(message: string, title?: string, iconName?: string, closeButton?: string | boolean): flashHTMLModel | string;
+  flashHTMLModel(...params:Array<any>): flashHTMLModel | string;
 }
 
-class flashHTMLModel {
-  static title?: string = "success";
-  static iconName?: string = "success";
+export class flashHTMLModel {
+  static title?: string = "Succès";
+  static icon?: string;
   static message: string;
+  static type?: string;
   [x: string]: any;
-  private isFlash: boolean = false;
   static closeButton: string | boolean = true;
-
-  constructor(message: string, title?: string, iconName?: string) {
+  type?:string;
+  message:string;
+  title?:string;
+  icon?:string;
+  
+  constructor(message: string, title?: string, icon?: string,type?:string) {
     this.message = message;
     this.title = title;
-    this.iconName = iconName;
+    this.icon = this.setIcon(type)??icon;
+    this.type = type;
   }
 
   public static PARENT(): string {
     return `<span class="flash-header">
                 <h6>${this.title}</h6>
-                ${SVG('close-modal')}
+                ${SVG('close-modal',iconPath)}
             </span>
             <span class="flash-content">
-            <h6>${SVG(this.iconName)}</h6>
+            <h6>${this.icon}</h6>
                 <h6 class="flash-message">
                     ${this.message}
                 </h6>
@@ -58,26 +61,21 @@ class flashHTMLModel {
     return flashHTMLModel.title;
   }
 
-  public setIcon(iconName: string): void {
-    if (this.isFlash) throw new Error("You can't change the Icon after you have called `show`");
-    switch (iconName) {
+  public setIcon(type?:string):string|null{
+    console.log(type)
+    if(undefined !== type)
+    switch (type) {
       case 'success':
-        this.icon = SVG(iconName);
-        break;
+        return this.icon = SVG(type,iconPath);
       case 'info':
-        this.icon = SVG(iconName);
-        break;
+        return this.icon = SVG(type,iconPath);
       case 'warning':
-        this.icon = SVG(iconName);
-        break;
+        return this.icon = SVG(type,iconPath);
       case 'error':
-        this.icon = SVG(iconName);
-        break;
+        return this.icon = SVG(type,iconPath);
       default:
-        console.log(`The icon ${iconName} is not supported`);
-        break;
+        return null;
     }
+    return null;
   }
 }
-
-export { flashHTMLModel }; // Ajout de l'exportation de la classe
