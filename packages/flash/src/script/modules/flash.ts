@@ -1,72 +1,35 @@
 import { $$ } from "../functions/dom";
 import { ModalComponent } from "../components/modal-component"
-interface FlashOptions {
-  el?: string;
-  classes?: {
-    base?: string;
-    fade?: string;
-    message?: string;
-  };
-}
-export class Flash{
+import { FlashInterface, flashHTMLModel } from "../interface/flash-interface";
+
+export class Flash implements FlashInterface{
+  
   private static HTML:string|any;
 
-  constructor(options?: FlashOptions) {
-    
-  }
-  public static show(type:string,message:string,options?: FlashOptions){
-    if(!Flash.HTML){
-      const template = `
-      <div id="flash-box">
-        <div class="flash flash-${type}">
-        Message de test
-        </div
-        </div>
-      `;
-
-      document.body.insertAdjacentHTML('beforeend',template);
-      Flash.HTML= $$('.flash-box') as HTMLElement;
-    }
-
-    // console.log("FLASH",
-    //   "type:",type,"message:",message,"options:",options)
-    
-    // options['message']=message;
-    // options['type']=type;
-
-    // new ModalComponent($$('.flash-box') as HTMLElement,options).open();
-    // setTimeout(()=>{
-    //   const flashBox = $$('.flash-box') as HTMLElement;
-    //   flashBox.remove()
-    // },3000);
-
-  }
-  public static addFlash(
+  addFlash(
     message:string, 
     type='danger', 
-    timer=0, 
-    action?:string, 
-    model?:string, 
+    timer=0,
+    title?:string, 
     container?:HTMLElement|null, 
     icon?:string,
     closeButton?:boolean|string): Flash
   {
-    let flash = Flash.create(timer,type,model);
-    this.setFlashProperties({
+    let flash = Flash.create(timer,type);
+    this.show({
       message:`${message}`,
       flashBox: flash,
-      action: action,
       container:container,
       type: type,
       timer: timer,
-      model:model,
+      title:title,
       icon:icon,
       closeButton:closeButton??true,
     });
     return this;
   }
 
-  public static setFlashProperties(props:string|any, container?:HTMLElement):Flash
+ show(props:string|any, container?:HTMLElement):Flash
   {
     let flashBox;
     let datas;
@@ -77,13 +40,12 @@ export class Flash{
       default:
         datas = {
           message: props.message, 
-          action: props.action, 
           container: props.container,
           icon: props.icon,
           timer: props.timer,
           type: props.type,
           flashBox: props.flashBox,
-          model: props.model,
+          title: props.title,
           closeButton:props.closeButton
         };
         break;
@@ -93,7 +55,7 @@ export class Flash{
       const message = flashBox.innerText;
       const icon = flashBox.getAttribute("icon") as string;
       const closeButton = flashBox.getAttribute("closeButton") as string;
-      flashBox.innerHTML = this.flasHtmlContent(message,icon,closeButton);
+      flashBox.innerHTML = this.flashHTMLModel(message,icon,closeButton) ;
       let modalComponent = new ModalComponent(flashBox, container);
       modalComponent.open();
       return this;
@@ -104,41 +66,24 @@ export class Flash{
       const container = datas.container;
       const closeButton = datas.closeButton;
       const flashBox = datas.flashBox;
-      // const messageContainer = flashBox.querySelector('.alert') as HTMLElement;
-      flashBox.innerHTML = this.flasHtmlContent(message,icon,closeButton);
+      const title = datas.title;
+      flashBox.innerHTML = this.flashHTMLModel(message,icon,closeButton,title);
       let modalComponent = new ModalComponent(flashBox,container);
       modalComponent.open();
     }
     return this;
   }
 
-  private static flasHtmlContent(message:string, icon?:string, closeButton?:string|boolean, title="Erreur"):string
+  public flashHTMLModel(message:string,icon?:string,closeButton?:string|boolean,title?:string):string
   {
-  
-    let button;
-    let setIcon;
-    
-    ('true' == closeButton)?
-    button = "<svg id='flash-close-button'><use xlink:href='../../assets/icon/alert.svg#close-modal'></use></svg>":
-    button = '';
-
-    ('null' != icon)?
-    setIcon = `<h6><svg><use xlink:href='../../assets/icon/alert.svg#${icon}'></use></svg></h6>`:
-    setIcon = '';
-
-    return `<span class="flash-header">
-              <h6>${title}</h6>
-              ${button}
-            </span>
-            <span class="flash-content">
-                ${setIcon}
-                <h6 class="flash-message">
-                    ${message}
-                </h6>
-            </span>`;
+    flashHTMLModel.message = message;
+    flashHTMLModel.iconName = icon;
+    flashHTMLModel.closeButton = closeButton? 'true': false;
+    flashHTMLModel.title = title;
+    return flashHTMLModel.PARENT();
   }
       
-  private static create(timer=0, type='danger', model?:string)
+  private static create(timer=0, type='danger')
   {
     let lastFlashBox = $$('.flash') as HTMLElement;
     if(lastFlashBox)

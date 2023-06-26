@@ -6,7 +6,7 @@ export class ModalComponent{
   protected audio: string | null;
   protected volume: number;
   protected timer: number;
-  protected titre: string;
+  protected titre?: string;
   protected container: HTMLElement | null;
   protected animation:{type:string,position:string};
   protected closeButton?:HTMLElement;
@@ -16,8 +16,8 @@ export class ModalComponent{
     this.modal = modal;
     this.audio = modal.getAttribute('audio');
     this.volume = parseInt(modal.getAttribute('volume') || '1', 10);
-    this.timer = parseInt(modal.getAttribute('timer') || '0', 10);
-    this.titre = modal.getAttribute('titre') || '';
+    this.timer = parseInt(modal.getAttribute('timer')||"0", 10);
+    this.titre = modal.getAttribute('titre') || undefined;
     modal.setAttribute('aria-hidden', 'true');
     this.container = container || null;
     this.animation = animation;
@@ -44,7 +44,7 @@ export class ModalComponent{
     const container = this.container;
     const h6 = this.modal.querySelector('.flash-header h6');
 
-    if(h6)
+    if(h6 && undefined !==  this.titre)
     h6.innerHTML = this.titre;
 
     if(container){
