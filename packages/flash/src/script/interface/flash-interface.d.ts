@@ -12,68 +12,99 @@ export interface FlashInterface {
 }
 
 export class flashHTMLModel {
-  static title?: string = "Succès";
-  static icon?: string;
-  static message: string;
-  static type?: string;
+  public static title: string | boolean;
+  public static icon: string | boolean;
+  public static message: string;
+  public static type?: string;
   [x: string]: any;
   static closeButton: string | boolean = true;
-  type?:string;
-  message:string;
-  title?:string;
-  icon?:string;
+  protected message:string;
+  protected title:string|boolean;
+  protected icon:string|boolean;
+  protected type?:string;
+  protected static hasHeader:boolean = true;
+  protected static hasFlashIcon:boolean = false;
   
-  constructor(message: string, title?: string, icon?: string,type?:string) {
+  constructor(message:string,title:string|boolean,icon:string|boolean,type?:string) {
     this.message = message;
     this.title = title;
     this.icon = icon;
     this.type = type;
   }
 
-  public static PARENT(): string {
-    return `<span class="flash-header">
-                <h6>${this.title}</h6>
-                ${SVG('close-modal',iconPath)}
-            </span>
+  public static parent(): string {
+    let title = flashHTMLModel.setTitle(this.title);
+    let icon = flashHTMLModel.setIcon(this.icon);
+    let type = flashHTMLModel.setType(this.type);
+    if((false === title || undefined === title) && false === flashHTMLModel.closeButton){
+    flashHTMLModel.hasHeader = false;}
+    if(undefined !== type || "" !== icon){
+      flashHTMLModel.hasFlashIcon = true;}
+    return `${flashHTMLModel.hasHeader?"<span class='flash-header'>":""}
+                ${typeof title == "string"?"<h6>"+title+"</h6>":""}
+                ${flashHTMLModel.closeButton?SVG('close-modal',iconPath):""}
+            ${flashHTMLModel.hasHeader?"</span>":""}
             <span class="flash-content">
-            <h6>${SVG(flashHTMLModel.type,iconPath)}</h6>
+                ${flashHTMLModel.hasFlashIcon?"<h6>"+icon+"</h6>":""}
                 <h6 class="flash-message">
                     ${this.message}
                 </h6>
             </span>`;
   }
 
-  public setMessage(message: string): void {
-    flashHTMLModel.message = message;
+  public getMessage(): string {
+    return this.message;
   }
 
-  public getMessage(): string {
+  public static setMessage(message?: string): string {
+    if(undefined !== message){
+      return this.message = message;
+    }
     return flashHTMLModel.message;
   }
 
-  public setTitle(title: string): void {
-    flashHTMLModel.title = title;
+
+  public getType(): string {
+    return this.type??"";
   }
 
-  public getTitle(): string|undefined {
-    return flashHTMLModel.title;
-  }
-
-  public setIcon(type?:string):string|null{
-    console.log(type)
-    if(undefined !== type)
-    switch (type) {
-      case 'success':
-        return this.icon = SVG(type,iconPath);
-      case 'info':
-        return this.icon = SVG(type,iconPath);
-      case 'warning':
-        return this.icon = SVG(type,iconPath);
-      case 'error':
-        return this.icon = SVG(type,iconPath);
-      default:
-        return null;
+  public static setType(type?: string): string|undefined {
+    if(undefined !== type){
+      return this.type = type;
     }
-    return null;
+    return flashHTMLModel.type;
+  }
+
+
+  public getTitle(): string {
+    return this.title??"";
+  }
+
+  protected static setTitle(title: string|boolean): string {
+    if(undefined === title || true === title){
+      return this.title = flashHTMLModel.type
+    }
+    if(typeof title == "string"){
+      return this.title = title;
+    }
+    return "";
+  }
+
+
+  public getIcon(): string{
+    return this.icon??"";
+  }
+
+  protected static setIcon(icon:string|boolean): string{
+    if(true === icon && undefined === flashHTMLModel.type){
+      return this.icon = SVG("success",iconPath);
+    }
+    if(true === icon && undefined !== flashHTMLModel.type){
+      return this.icon = SVG(flashHTMLModel.type,iconPath);
+    }
+    if(typeof icon == "string"){
+      return this.icon = SVG(icon,iconPath);
+    }
+    return "";
   }
 }

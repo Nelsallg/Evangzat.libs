@@ -1,8 +1,8 @@
 @mixin slide-in-top($element,$time:.5s,$top:-100%){
   #{$element}.slide-in-top {
-    animation: slide-out-top $time cubic-bezier(0.550, 0.085, 0.680, 0.530) both running;
+    animation: slide-in-top $time cubic-bezier(0.550, 0.085, 0.680, 0.530) both running;
   }
-  @keyframes slide-out-top {
+  @keyframes slide-in-top {
     0% {
       -webkit-transform: translateY($top);
               transform: translateY($top);

@@ -26,7 +26,6 @@ export function animeIn(
     display?:string) 
 {
     switchAnimation(element,true,animation);
-    console.log({"audepart":element})
     if (undefined !== display){
         element.style.display = display;
     }else{
@@ -47,18 +46,15 @@ export function animeOut(
         if(undefined !== closeButton){
             closeButton.addEventListener('click',function(){
                 switchAnimation(element,false,animation);
-                console.log({"àlariver":element})
                 setTimeout(() => {
                     element.style.display = 'none';
                 }, delay||0);
             })
-        }else{
-            switchAnimation(element,false,animation);
-            console.log({"àlariver":element})
-            setTimeout(() => {
-                element.style.display = 'none';
-            }, delay||0);
         }
+        switchAnimation(element,false,animation);
+        setTimeout(() => {
+            element.style.display = 'none';
+        }, delay||0);
         return;
     }else{
         if(undefined !== closeButton){
@@ -69,15 +65,12 @@ export function animeOut(
                 }, delay||0);
                 return;
             })
-        }else{
-            switchAnimation(element,false,animation);
-            setTimeout(() => {
-                element.remove();
-            }, delay||0);
-            return;
         }
+        switchAnimation(element,false,animation);
+        setTimeout(() => {
+            element.remove();
+        },delay||0);
     }
-    switchAnimation(element,true,animation);
 }
 
 

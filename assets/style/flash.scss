@@ -1,6 +1,6 @@
-@use './animations/slide.scss';
-@include slide.slide-out-top('.flash-box',.4s,-200%);
-@include slide.slide-in-top('.flash-box',.4s,-200%);
+@use './animations/fade.scss';
+@include fade.fade-out-top('.flash-box',.4s,-200%);
+@include fade.fade-in-top('.flash-box',.4s,-200%);
 .flash-box{
   *{
     padding:0;
@@ -17,6 +17,7 @@
   border-radius:10px;
   min-height: 100px;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.400);
 }
@@ -47,7 +48,6 @@ border-right: 10px solid #ffc107;
 }
 .flash-box .flash-header h6{
   font-size: 25px;
-  color:#28a745;
   width: 150px;
 }
 .flash-box.flashtype-error .flash-header h6{
@@ -64,7 +64,6 @@ border-right: 10px solid #ffc107;
 }
 .flash-box .flash-header svg{
   font-size: 25px;
-  color:#28a745;
   position: relative;
   width: 30px;
   cursor: pointer;
@@ -92,7 +91,6 @@ border-right: 10px solid #ffc107;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-bottom: 10px;
   svg{
     width: 30px;
     height:30px;

@@ -12,7 +12,7 @@ export class ModalComponent{
   protected closeButton?:HTMLElement;
   protected openButton?:HTMLElement;
 
-  constructor(modal: Element,container?: HTMLElement,animation={type:'slide',position:'top'}) {
+  constructor(modal: Element,container?: HTMLElement,animation={type:'fade',position:'top'}) {
     this.modal = modal;
     this.audio = modal.getAttribute('audio');
     this.volume = parseInt(modal.getAttribute('volume') || '1', 10);
@@ -38,7 +38,7 @@ export class ModalComponent{
       audio.play();
     }
     const modal = this.modal;
-    animeIn(modal as HTMLElement,this.animation,'null');
+    animeIn(modal as HTMLElement,this.animation,'flex');
     const container = this.container;
    
     if(undefined !== container){

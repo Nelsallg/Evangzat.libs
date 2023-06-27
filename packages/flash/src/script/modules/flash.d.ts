@@ -13,7 +13,7 @@ FormatParamsToObject.ACCEPTED_PARAMS = [
 export class Flash implements FlashInterface{
   
  
-  addFlash(...params:Array<any>): Flash
+  addFlash(...params:{}): Flash
   {
     let properties = new FormatParamsToObject(params).getProperties();
     let flash = Flash.create(properties['timer'],properties['type']);
@@ -26,7 +26,7 @@ export class Flash implements FlashInterface{
       timer: properties['timer'],
       title: properties['title'],
       icon: properties['icon'],
-      closeButton: properties['closeButton']??true,
+      closeButton: properties['closeButton']??false,
     } as any);
     return this;
   }
@@ -95,19 +95,25 @@ export class Flash implements FlashInterface{
     let properties = new FormatParamsToObject(params).getProperties();
     flashHTMLModel.message = properties['message'];
     flashHTMLModel.type = properties['type'];
-    flashHTMLModel.closeButton = properties['closeButton'] ? 'true': false;
+    flashHTMLModel.closeButton = properties['closeButton'];
     flashHTMLModel.title = properties['title'];
-    return flashHTMLModel.PARENT();
+    flashHTMLModel.icon = properties['icon'];
+    return flashHTMLModel.parent();
   }
       
-  private static create(timer=0, type='danger')
+  private static create(timer?:number, type?:string)
   {
     let lastFlashBox = $$('.flash') as HTMLElement;
     if(lastFlashBox)
     lastFlashBox.remove();
 
+    (undefined != type)?
+    type = "flashtype-"+type:
+    type = "";
+    
     let flashBox = document.createElement('flash');
-    flashBox.setAttribute('class',`flash-box flashtype-${type}`)
+    flashBox.setAttribute('class',`flash-box ${type}`)
+    if(undefined !== timer && timer > 0)
     flashBox.setAttribute('timer', `${timer}`);
 
     return flashBox;
