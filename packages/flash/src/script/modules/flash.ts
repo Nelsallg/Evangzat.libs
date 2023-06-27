@@ -13,13 +13,11 @@ FormatParamsToObject.ACCEPTED_PARAMS = [
 export class Flash implements FlashInterface{
   
  
-
   addFlash(...params:Array<any>): Flash
   {
     let properties = new FormatParamsToObject(params).getProperties();
     let flash = Flash.create(properties['timer'],properties['type']);
-    
-    // console.log({para:params,prop:properties})
+ 
     this.show({
       message: properties['message'],
       flashBox: flash,
@@ -90,7 +88,7 @@ export class Flash implements FlashInterface{
    */
   public flashHTMLModel(...params:Array<any>):string
   {
-    // message:string,icon?:string,closeButton?:string|boolean,title?:string,type?:string
+  
     FormatParamsToObject.ACCEPTED_PARAMS = [
       "message","icon","type","closeButton","title",
     ]

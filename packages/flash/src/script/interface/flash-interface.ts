@@ -1,11 +1,9 @@
 /// <reference types="vite/client" />
 
-
 import { Flash } from "../modules/flash";
 import { SVG } from "../components/custom.d";
 import iconPath from "../../assets/icon/icon.svg";
 import '../../../../../assets/style/flash.scss';
-import { types } from "sass";
 
 export interface FlashInterface {
   addFlash(...params:Array<any>): Flash;
