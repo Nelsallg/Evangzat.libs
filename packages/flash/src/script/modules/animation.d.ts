@@ -4,12 +4,12 @@ const stopPropagation = function (e: Event){
 };
 
 
-function switchAnimation(element:HTMLElement,fromOut:boolean,animation?:{type:string,position:string}) 
+function switchAnimation(element:HTMLElement,fromInToOut:boolean,animation?:{type:string,position:string}) 
 {
     if(undefined !== animation){
         const animeType = animation.type ?? 'fade'
         const animePosition = animation.position ?? 'top'
-        if(true === fromOut){
+        if(true === fromInToOut){
             element.classList.remove(`${animeType}-out-${animePosition}`);
             element.classList.add(`${animeType}-in-${animePosition}`);
         }else{
@@ -26,6 +26,7 @@ export function animeIn(
     display?:string) 
 {
     switchAnimation(element,true,animation);
+    console.log({"audepart":element})
     if (undefined !== display){
         element.style.display = display;
     }else{
@@ -43,22 +44,24 @@ export function animeOut(
     closeButton?:HTMLElement) 
 {
     if(undefined !== display){
-        if(undefined !== closeButton && null !== closeButton){
+        if(undefined !== closeButton){
             closeButton.addEventListener('click',function(){
                 switchAnimation(element,false,animation);
+                console.log({"àlariver":element})
                 setTimeout(() => {
                     element.style.display = 'none';
                 }, delay||0);
             })
         }else{
             switchAnimation(element,false,animation);
+            console.log({"àlariver":element})
             setTimeout(() => {
                 element.style.display = 'none';
             }, delay||0);
         }
         return;
     }else{
-        if(undefined !== closeButton && null !== closeButton){
+        if(undefined !== closeButton){
             closeButton.addEventListener('click',function(){
                 switchAnimation(element,false,animation);
                 setTimeout(() => {
@@ -67,14 +70,14 @@ export function animeOut(
                 return;
             })
         }else{
-            switchAnimation(element,true,animation);
+            switchAnimation(element,false,animation);
             setTimeout(() => {
                 element.remove();
             }, delay||0);
             return;
         }
     }
-    switchAnimation(element,false,animation);
+    switchAnimation(element,true,animation);
 }
 
 

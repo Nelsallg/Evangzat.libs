@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 
-import { Flash } from "../modules/flash";
+import { Flash } from "../modules/flash.d";
 import { SVG } from "../components/custom.d";
 import iconPath from "../../assets/icon/icon.svg";
 import '../../../../../assets/style/flash.scss';
@@ -26,7 +26,7 @@ export class flashHTMLModel {
   constructor(message: string, title?: string, icon?: string,type?:string) {
     this.message = message;
     this.title = title;
-    this.icon = this.setIcon(type)??icon;
+    this.icon = icon;
     this.type = type;
   }
 
@@ -36,7 +36,7 @@ export class flashHTMLModel {
                 ${SVG('close-modal',iconPath)}
             </span>
             <span class="flash-content">
-            <h6>${this.icon}</h6>
+            <h6>${SVG(flashHTMLModel.type,iconPath)}</h6>
                 <h6 class="flash-message">
                     ${this.message}
                 </h6>

@@ -1,4 +1,4 @@
-import { resolvePath } from "./resolver";
+import { resolvePath } from "./resolver.d";
 export function setAudio(audioPath:string, classname=null) {
     const audio = document.createElement('audio');
     if(classname != null){audio.classList.add(classname);}

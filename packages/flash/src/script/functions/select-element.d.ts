@@ -1,4 +1,4 @@
-import { $$ } from "./dom";
+import { $$ } from "./dom.d";
 /**
  * auto-redimention de l'élément select en fonction de la taille de l'option
  * @param {string|HTMLSelectElement} select

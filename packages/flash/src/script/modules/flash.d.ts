@@ -1,7 +1,7 @@
-import { $$ } from "../functions/dom";
-import { ModalComponent } from "../components/modal-component"
-import { FlashInterface, flashHTMLModel } from "../interface/flash-interface";
-import { FormatParamsToObject } from "../utils/format-params-to-object";
+import { $$ } from "../functions/dom.d";
+import { ModalComponent } from "../components/modal-component.d"
+import { FlashInterface, flashHTMLModel } from "../interface/flash-interface.d";
+import { FormatParamsToObject } from "../utils/format-params-to-object.d";
 
 FormatParamsToObject.ACCEPTED_PARAMS = [
   "message","type","timer","title","closeButton",

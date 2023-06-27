@@ -1,4 +1,4 @@
-import {$$} from './dom'
+import {$$} from './dom.d'
 
 export function checkbox(parentElement: string){
     const content = $$(parentElement);
