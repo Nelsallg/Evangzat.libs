@@ -16,7 +16,7 @@ export class flashHTMLModel {
   public static icon: string | boolean;
   public static message: string;
   public static type?: string;
-  [x: string]: any;
+  // [x: string]: any;
   static closeButton: string | boolean = true;
   protected message:string;
   protected title:string|boolean;
@@ -38,7 +38,7 @@ export class flashHTMLModel {
     let type = flashHTMLModel.setType(this.type);
     if((false === title || undefined === title) && false === flashHTMLModel.closeButton){
     flashHTMLModel.hasHeader = false;}
-    if(undefined !== type || "" !== icon){
+    if(undefined !== type && " " !== icon){
       flashHTMLModel.hasFlashIcon = true;}
     return `${flashHTMLModel.hasHeader?"<span class='flash-header'>":""}
                 ${typeof title == "string"?"<h6>"+title+"</h6>":""}
@@ -47,7 +47,7 @@ export class flashHTMLModel {
             <span class="flash-content">
                 ${flashHTMLModel.hasFlashIcon?"<h6>"+icon+"</h6>":""}
                 <h6 class="flash-message">
-                    ${this.message}
+                    ${this.message?this.message:"Vous n'avez entré aucun message."}
                 </h6>
             </span>`;
   }
@@ -80,16 +80,15 @@ export class flashHTMLModel {
     return this.title??"";
   }
 
-  protected static setTitle(title: string|boolean): string {
+  protected static setTitle(title: string|boolean): string|boolean {
     if(undefined === title || true === title){
       return this.title = flashHTMLModel.type
     }
     if(typeof title == "string"){
       return this.title = title;
     }
-    return "";
+    return false;
   }
-
 
   public getIcon(): string{
     return this.icon??"";
@@ -105,6 +104,6 @@ export class flashHTMLModel {
     if(typeof icon == "string"){
       return this.icon = SVG(icon,iconPath);
     }
-    return "";
+    return ""
   }
 }

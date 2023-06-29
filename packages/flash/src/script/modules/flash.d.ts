@@ -13,8 +13,9 @@ FormatParamsToObject.ACCEPTED_PARAMS = [
 export class Flash implements FlashInterface{
   
  
-  addFlash(...params:{}): Flash
+  addFlash(params:{}): Flash
   {
+    
     let properties = new FormatParamsToObject(params).getProperties();
     let flash = Flash.create(properties['timer'],properties['type']);
  
@@ -79,20 +80,15 @@ export class Flash implements FlashInterface{
     return this;
   }
 
-  /**
-   * @argument {string} params.message
-   * @argument {string} params.icon
-   * @argument {string|boolean} params.closeButton
-   * @argument {string} [params.title]
-   * @argument {string} params.type
-   */
-  public flashHTMLModel(...params:Array<any>):string
+  
+  public flashHTMLModel(props:{}):string
   {
   
     FormatParamsToObject.ACCEPTED_PARAMS = [
       "message","icon","type","closeButton","title",
     ]
-    let properties = new FormatParamsToObject(params).getProperties();
+    let properties = new FormatParamsToObject(props).getProperties();
+    console.log(properties)
     flashHTMLModel.message = properties['message'];
     flashHTMLModel.type = properties['type'];
     flashHTMLModel.closeButton = properties['closeButton'];

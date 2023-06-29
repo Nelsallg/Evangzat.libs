@@ -5,15 +5,13 @@ export class FormatParamsToObject
     static ACCEPTED_PARAMS: Array<string> = [];
     protected properties: Object = {};
 
-    public constructor(...params:Array<any>){
+    public constructor(params:{}){
         this.properties = {};
         if(FormatParamsToObject.ACCEPTED_PARAMS.length>0){
             FormatParamsToObject.ACCEPTED_PARAMS.forEach(key => {
-                params.forEach(param => {
-                    if(undefined !== param[0] && param[0].hasOwnProperty(key)){
-                        Object.assign(this.properties,{[key]:param[0][key]})
-                    }
-                });
+                if(params.hasOwnProperty(key)){
+                    Object.assign(this.properties,{[key]:params[key]})
+                }
             });
         }
     }

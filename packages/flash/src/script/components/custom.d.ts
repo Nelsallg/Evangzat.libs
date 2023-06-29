@@ -1,4 +1,4 @@
-export function SVG(iconName?:string,iconPath?:string,attributes?:string):string {
+export function SVG(iconName:string,iconPath?:string,attributes?:string):string {
     let name = ["success","error","warning","info",'close-modal'];
     let content = "";
     if(undefined !== iconName && name.indexOf(iconName)>=0){
